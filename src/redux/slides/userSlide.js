@@ -17,7 +17,7 @@ export const userSlide = createSlice({
         updateUser: (state, action) => {
             // const { name = '', email = '', access_token = '' } = action.payload
             const { name = '', email = '', address = '', phone = '', avatar = '', access_token = '', _id = '' } = action.payload
-            console.log('action', action)
+            // console.log('action', action)
             state.name = name;
             state.email = email;
             state.address = address;

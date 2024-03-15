@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { routes } from './routes'
 import DefaultComponent from './components/DefaultComponents/DefaultComponents'
@@ -7,12 +7,16 @@ import * as UserService from './services/UserService'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUser } from './redux/slides/userSlide'
 import { isJsonString } from './utils'
+import Loading from './components/LoadingComponent/Loading';
 
 
 function App() {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false)
   const user = useSelector((state) => state.user)
+
   useEffect(() => {
+    setIsLoading(true)
     const { storageData, decoded } = handleDecoded()
     if (decoded?.id) {
       handleGetDetailsUser(decoded?.id, storageData)
@@ -45,25 +49,30 @@ function App() {
   const handleGetDetailsUser = async (id, token) => {
     const res = await UserService.getDetailsUser(id, token)
     dispatch(updateUser({ ...res?.data, access_token: token, }))
+    setIsLoading(false)
   }
 
   return (
     <div>
-      <Router>
-        <Routes>
-          {routes.map((route) => {
-            const Page = route.page
-            const Layout = route.isShowHeader ? DefaultComponent : Fragment
-            return (
-              <Route key={route.path} path={route.path} element={
-                <Layout>
-                  <Page />
-                </Layout>
-              } />
-            )
-          })}
-        </Routes>
-      </Router>
+      <Loading isLoading={isLoading}>
+        <Router>
+          <Routes>
+            {routes.map((route) => {
+              const Page = route.page
+              const ischeckAuth = !route.isPrivate || user.isAdmin
+              // const ischeckAuth = !route.isPrivate
+              const Layout = route.isShowHeader ? DefaultComponent : Fragment
+              return (
+                <Route key={route.path} path={route.path} element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                } />
+              )
+            })}
+          </Routes>
+        </Router>
+      </Loading>
     </div>
   )
 }

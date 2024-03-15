@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Badge, Button, Col, Popover, Row } from 'antd'
 import { WrapperContentPopup, WrapperHeader, WrapperHeaderAccount, WrapperHeaderSmall, WrapperTextHeader } from './style'
 import {
@@ -17,6 +17,7 @@ const HeaderComponent = () => {
     const navigate = useNavigate()
     const user = useSelector((state) => state.user)
     const dispatch = useDispatch()
+    const [userName, setUserName] = useState('')
     const [loading, setLoading] = useState(false)
     const handleNavigateLogin = () => {
         navigate('/sign-in')
@@ -29,6 +30,12 @@ const HeaderComponent = () => {
         localStorage.removeItem('access_token');
         setLoading(false)
     }
+
+    useEffect(() => {
+        setLoading(true)
+        setUserName(user?.name)
+        setLoading(false)
+    }, [user?.name])
 
     const content = (
         <div>
@@ -58,7 +65,7 @@ const HeaderComponent = () => {
                             {user?.access_token ? (
                                 <>
                                     <Popover content={content} trigger="click">
-                                        <div style={{ cursor: 'pointer' }}>{user?.name?.length ? user?.email : user?.email}</div>
+                                        <div style={{ cursor: 'pointer' }}>{userName?.length ? userName : user?.email}</div>
                                     </Popover>
                                 </>
                             ) : (

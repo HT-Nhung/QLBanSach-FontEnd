@@ -14,12 +14,10 @@ const HomePage = () => {
 
     const fetchProductAll = async () => {
         const res = await ProductService.getAllProduct()
-        console.log('res', res)
         return res
     }
 
     const { isLoading, data: products } = useQuery(['product'], fetchProductAll, { retry: 3, retryDelay: 1000 })
-    console.log('data', products)
     return (
         <>
             <div style={{ width: '1270px', margin: '0 auto' }}>
@@ -51,16 +49,6 @@ const HomePage = () => {
                                 />
                             )
                         })}
-                        {/* <CardComponent />
-                        <CardComponent />
-                        <CardComponent />
-                        <CardComponent />
-                        <CardComponent />
-                        <CardComponent />
-                        <CardComponent />
-                        <CardComponent />
-                        <CardComponent />
-                        <CardComponent /> */}
                     </WpapperProducts>
                     <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
                         <WrapperButtonMore textButton="Xem thêm" type="outline"

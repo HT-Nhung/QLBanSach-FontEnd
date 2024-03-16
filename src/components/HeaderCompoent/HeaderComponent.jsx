@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Badge, Button, Col, Popover, Row } from 'antd'
+import { Badge, Col, Popover } from 'antd'
 import { WrapperContentPopup, WrapperHeader, WrapperHeaderAccount, WrapperHeaderSmall, WrapperTextHeader } from './style'
 import {
     UserOutlined,

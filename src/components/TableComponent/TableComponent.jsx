@@ -2,49 +2,38 @@ import { Divider, Radio, Table } from "antd";
 import React from "react";
 
 const TableComponent = (props) => {
-    const { selectionType = 'checkbox' } = props
+    const { selectionType = 'checkbox', products = [], isLoading = false } = props
 
     const columns = [
         {
-            title: 'Name',
+            title: 'Tên sản phẩm',
             dataIndex: 'name',
             render: (text) => <a>{text}</a>,
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
+            title: 'Giá bán',
+            dataIndex: 'price',
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
+            title: 'Đánh giá',
+            dataIndex: 'rating',
+        },
+        {
+            title: 'Thể loại',
+            dataIndex: 'type',
+        },
+        {
+            title: 'Hoạt động',
+            dataIndex: 'action',
+            render: (text) => <a>{text}</a>,
         },
     ];
-    const data = [
-        {
-            key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-        },
-        {
-            key: '4',
-            name: 'Disabled User',
-            age: 99,
-            address: 'Sydney No. 1 Lake Park',
-        },
-    ];
+    const data = products.length && products?.map((product) => {
+        return { ...product, key: product._id }
+    })
+
+    console.log('data', data)
+
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
             console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);

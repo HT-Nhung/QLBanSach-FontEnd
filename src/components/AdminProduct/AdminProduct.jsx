@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Modal } from "antd";
-import { PlusOutlined } from '@ant-design/icons'
+import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import TableComponent from "../TableComponent/TableComponent";
 import { WrapperHeader, WrapperUploadFile } from "./style";
 import InputComponent from '../InputComponent/InputComponent'
@@ -58,7 +58,42 @@ const AdminProduct = () => {
 
     const { data, isLoading, isSuccess, isError } = mutation
     const { isLoading: isLoadingProducts, data: products } = useQuery({ queryKey: ['products'], queryFn: getAllProducts })
-    console.log('products', products)
+    const renderAction = () => {
+        return (
+            <div>
+                <EditOutlined style={{ color: 'green', fontSize: '25px', cursor: 'pointer' }} />
+                <DeleteOutlined style={{ color: 'red', fontSize: '25px', cursor: 'pointer' }} />
+            </div>
+        )
+    }
+    const columns = [
+        {
+            title: 'Tên sản phẩm',
+            dataIndex: 'name',
+            render: (text) => <a>{text}</a>,
+        },
+        {
+            title: 'Giá bán',
+            dataIndex: 'price',
+        },
+        {
+            title: 'Đánh giá',
+            dataIndex: 'rating',
+        },
+        {
+            title: 'Thể loại',
+            dataIndex: 'type',
+        },
+        {
+            title: 'Hoạt động',
+            dataIndex: 'action',
+            render: renderAction
+        },
+    ];
+    const dataTable = products?.data?.length && products?.data?.map((product) => {
+        return { ...product, key: product._id }
+    })
+
     useEffect(() => {
         if (isSuccess && data?.status === 'OK') {
             message.success()
@@ -84,7 +119,6 @@ const AdminProduct = () => {
 
     const onFinish = () => {
         mutation.mutate(stateProduct)
-        // console.log('finish', stateProduct)
     }
 
     const handleOnchange = (e) => {
@@ -119,7 +153,7 @@ const AdminProduct = () => {
                 </Button>
             </div>
             <div style={{ marginTop: '20px' }}>
-                <TableComponent products={products?.data} isLoading={isLoadingProducts} />
+                <TableComponent columns={columns} isLoading={isLoadingProducts} data={dataTable} />
             </div>
             <Modal title="Tạo sản phẩm" open={isModalOpen} onCancel={handleCancel} footer={null}>
                 <Loading isLoading={isLoading}>

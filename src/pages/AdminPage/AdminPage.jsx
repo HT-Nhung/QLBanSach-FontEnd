@@ -57,8 +57,7 @@ const AdminPage = () => {
                     // onOpenChange={onOpenChange}
                     style={{
                         width: 256,
-                        boxShadow: '1px 1px 2px #ccc',
-                        height: '100vh'
+                        boxShadow: '1px 1px 2px #ccc'
                     }}
                     items={items}
                     onClick={handleOnClick}
